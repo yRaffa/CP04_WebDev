@@ -1,49 +1,46 @@
-// Função para adicionar um produto ao carrinho
-function adicionarProduto(id, nome, valor, quantidade) {
-    // Obter os produtos do localStorage ou criar um novo array vazio
-    let carrinho = JSON.parse(localStorage.getItem('carrinho')) || [];
-    
-    // Adicionar o novo produto ao array
-    carrinho.push({ id, nome, valor, quantidade });
-    
-    // Salvar o carrinho atualizado no localStorage
-    localStorage.setItem('carrinho', JSON.stringify(carrinho));
-}
-// Função para remover um produto do carrinho
-function removerProduto(id) {
-    // Obter os produtos do localStorage
-    let carrinho = JSON.parse(localStorage.getItem('carrinho'));
-    
-    // Filtrar os produtos, removendo o produto com o id especificado
-    carrinho = carrinho.filter(produto => produto.id !== id);
-    
-    // Salvar o carrinho atualizado no localStorage
-    localStorage.setItem('carrinho', JSON.stringify(carrinho));
-}
 // Função para exibir os produtos do carrinho
 function exibirCarrinho() {
-    // Obter os produtos do localStorage
     let carrinho = JSON.parse(localStorage.getItem('carrinho'));
-    
-    // Verificar se o carrinho está vazio
+    const listaProdutos = document.querySelector('#lista-produtos');
+    listaProdutos.innerHTML = '';
+    let valorTotal = 0;
     if (carrinho && carrinho.length > 0) {
-        // Exibir os produtos em um elemento HTML (ajuste conforme sua estrutura HTML)
-        const listaProdutos = document.getElementById('lista-produtos');
-        listaProdutos.innerHTML = '';
-        
         carrinho.forEach(produto => {
-            const li = document.createElement('li');
-            li.textContent = `${produto.nome} - Quantidade: ${produto.quantidade} - Valor: R$ ${produto.valor.toFixed(2)}`;
-            listaProdutos.appendChild(li);
+            const novoProduto = document.createElement('li');
+            novoProduto.textContent = `${produto.nome} / Quantidade: ${produto.quantidade} / Valor: R$ ${produto.valor.toFixed(2)}`;
+            listaProdutos.appendChild(novoProduto);
+            valorTotal += produto.valor;
         });
+        const espaco = document.createElement('br')
+        const total = document.createElement('p');
+        total.textContent = `Valor total da compra: R$ ${valorTotal.toFixed(2)}`;
+        listaProdutos.appendChild(espaco);
+        listaProdutos.appendChild(total);
     } else {
-        // Exibir a mensagem de carrinho vazio
-        const listaProdutos = document.getElementById('lista-produtos');
         listaProdutos.innerHTML = 'O carrinho está vazio!';
     }
 }
 
-// Inicialização da aplicação: verificar se há produtos no carrinho e exibi-los
 exibirCarrinho();
 
-// Implementar EventListener e Remover do Carrinho
+// Função para adicionar um produto ao carrinho
+function adicionarProduto(id, nome, valor, quantidade) {
+    let carrinho = JSON.parse(localStorage.getItem('carrinho')) || [];
+    const produtoExistente = carrinho.find(produto => produto.id === id);
+    if (produtoExistente) {
+        produtoExistente.quantidade += quantidade;
+        produtoExistente.valor += valor;
+    } else {
+        carrinho.push({ id, nome, valor, quantidade });
+    }
+    localStorage.setItem('carrinho', JSON.stringify(carrinho));
+    exibirCarrinho();
+}
+
+// Função para remover um produto do carrinho
+function removerProduto(id) {
+    let carrinho = JSON.parse(localStorage.getItem('carrinho'));
+    carrinho = carrinho.filter(produto => produto.id !== id);
+    localStorage.setItem('carrinho', JSON.stringify(carrinho));
+    exibirCarrinho();
+}

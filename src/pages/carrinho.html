@@ -8,33 +8,49 @@
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous" defer></script>
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+        integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer">
     <!-- Local CSS / JS -->
     <link rel="stylesheet" href="../styles/carrinho.css">
     <script src="../scripts/carrinho.js" defer></script>
     <title>CP04 WebDev | Carrinho</title>
 </head>
 <body>
-    <ul id="lista-produtos"></ul>
-    <div>
-        <p>ID: 1</p>
-        <p>Nome: Camiseta</p>
-        <p>Valor: R$29.99</p>
-        <p>Quantidade: 2</p>
-        <button onclick="adicionarProduto(1, 'Camiseta', 29.99, 2)">Adicionar ao Carrinho</button>
+    <header class="title">
+        <h1>CP04 - Carrinho</h1>
+        <a href="../../index.html" class="btn mt-3 text-center text-uppercase fw-bold voltar">Voltar</a>
+    </header>
+    <div class="container">
+        <div class="card">
+            <img src="../images/camiseta.jpg" alt="Camiseta">
+            <p>Camiseta</p>
+            <p class="fw-bold">R$ 29.99</p>
+            <p>Quantidade: 2</p>
+            <button onclick="adicionarProduto(1, 'Camiseta', 29.99, 2)" class="btn mt-3 text-uppercase fw-bold">Adicionar ao Carrinho</button>
+            <button onclick="removerProduto(1)" class="btn mt-3 text-uppercase fw-bold">Remover do Carrinho</button>
+        </div>
+        <div class="card">
+            <img src="../images/jeans.jpg" alt="Calça">
+            <p>Calça Jeans</p>
+            <p class="fw-bold">R$ 99.90</p>
+            <p>Quantidade: 1</p>
+            <button onclick="adicionarProduto(2, 'Calça Jeans', 99.90, 1)" class="btn mt-3 text-uppercase fw-bold">Adicionar ao Carrinho</button>
+            <button onclick="removerProduto(2)" class="btn mt-3 text-uppercase fw-bold">Remover do Carrinho</button>
+        </div>
+        <div class="card">
+            <img src="../images/tenis.jpg" alt="Tênis">
+            <p>Tênis</p>
+            <p class="fw-bold">R$ 149.90</p>
+            <p>Quantidade: 1</p>
+            <button onclick="adicionarProduto(3, 'Tênis', 149.90, 1)" class="btn mt-3 text-uppercase fw-bold">Adicionar ao Carrinho</button>
+            <button onclick="removerProduto(3)" class="btn mt-3 text-uppercase fw-bold">Remover do Carrinho</button>
+        </div>
     </div>
-    <div>
-        <p>ID: 2</p>
-        <p>Nome: Calça Jeans</p>
-        <p>Valor: R$99.90</p>
-        <p>Quantidade: 1</p>
-        <button onclick="adicionarProduto(2, 'Calça Jeans', 99.90, 1)">Adicionar ao Carrinho</button>
-    </div>
-    <div>
-        <p>ID: 3</p>
-        <p>Nome: Tênis</p>
-        <p>Valor: R$149.90</p>
-        <p>Quantidade: 1</p>
-        <button onclick="adicionarProduto(3, 'Tênis', 149.90, 1)">Adicionar ao Carrinho</button>
+    <i class="fa fa-shopping-cart"></i>
+    <div class="container">
+        <ul class="fw-bold" id="lista-produtos"></ul>
     </div>
 </body>
 </html>
