@@ -1,35 +1,30 @@
 // Criando a base de dados de filmes  
 const filmes = [
-  {
-  id: 0,
+  {id: 0,
   nome: 'Harry Potter',
-  genero: 'fantasia',
-  lancamento: 2001
-  },
-  {
-  id: 1,
+  genero: 'Fantasia',
+  lancamento: 2001},
+
+  {id: 1,
   nome: 'Avatar',
-  genero: 'fantasia',
-  lancamento: 2010
-  },
-  {
-   id:2,
-   nome:'O senhor dos Anéis',
-   genero: 'fantasia',
-   lancamento: 2000,
-  },
-  {
-   id:3,
-   nome: 'Branquelas',
-   genero: 'comédia',
-   lancamento: 2007
-  },
-  {
-   id:4,
-   nome: 'A Lagoa Azul',
-   genero: 'romance',
-   lancamento: 1983
-}]
+  genero: 'Fantasia',
+  lancamento: 2010},
+
+  {id:2,
+  nome:'O senhor dos Anéis',
+  genero: 'Fantasia',
+  lancamento: 2000,},
+
+  {id:3,
+  nome: 'Branquelas',
+  genero: 'Comédia',
+  lancamento: 2007},
+
+  {id:4,
+  nome: 'A Lagoa Azul',
+  genero: 'Romance',
+  lancamento: 1983},
+];
 
 // Criando um array de filmes favoritos
 
@@ -59,7 +54,7 @@ const renderizarLista = () =>{
       //adiciona o li à lista de filmes
       listaFilmes.append(itemLista)
       //adiciona o filme que o usuário digitou à lista
-      itemLista.innerHTML = `Meu filme ${filme.nome}`
+      itemLista.innerHTML = `${filme.nome}`
 
       
       //cria uma nova imagem
