@@ -1,19 +1,24 @@
+// Pegando elementos HTML
 const botaoAdicionar = document.querySelector('#btnAdicionar');
 const listaFilmes = document.querySelector('#listaFilmes');
 
+// Criando lista de filmes
 let filmes = [
   {id: 0, nome: 'Jujutsu Kaisen 0', genero: 'Shounen', lancamento: 2021,},
   {id: 1, nome: 'Homem-Aranha: Através do Aranha-Verso', genero: 'Ação', lancamento: 2023},
   {id: 2, nome: 'Vingadores: Guerra Infinita', genero: 'Ação', lancamento: 2018},
 ];
 
+// Criando lista de filmes favoritos
 let filmesFavoritos = [];
 
+// Funções chamadas ao carregar a página
 window.onload = () => {
   carregarFilmes();
-  renderizarLista();
+  mostrarLista();
 }
 
+// Função para o botão de adicionar u filme a lista
 botaoAdicionar.addEventListener('click', () => {
   const inputTitulo = document.querySelector('#tituloInput');
   const inputGenero = document.querySelector('#generoInput');
@@ -29,13 +34,14 @@ botaoAdicionar.addEventListener('click', () => {
   filmes.push({id:id,nome: inputTitulo.value, genero: inputGenero.value, lancamento: inputAno.value});
 
   salvarFilmes();
-  renderizarLista();
+  mostrarLista();
 
   inputTitulo.value = '';
   inputGenero.value = '';
   inputAno.value = '';
 });
 
+// Função para carregar informações dos filmes no LocalStorage
 const carregarFilmes = () => {
   const filmesSalvos = localStorage.getItem('filmes');
   if (filmesSalvos) {
@@ -48,12 +54,37 @@ const carregarFilmes = () => {
   }
 }
 
+// Função para salvar filmes no LocalStorage
 const salvarFilmes = () => {
   const filmesJSON = JSON.stringify(filmes);
   localStorage.setItem('filmes', filmesJSON);
 }
 
-const renderizarLista = () => {
+// Função para salvar filmes favoritos no LocalStorage
+const salvarFilmeFavorito = (objetoFilme) => {
+  if (localStorage.getItem('favoritos')) {
+    filmesFavoritos = JSON.parse(localStorage.getItem('favoritos'));
+  }
+
+  filmesFavoritos.push(objetoFilme);
+  const moviesJSON = JSON.stringify(filmesFavoritos);
+  localStorage.setItem('favoritos', moviesJSON);
+}
+
+// Função para remover filmes favoritos no LocalStorage
+const removerFilmeFavorito = (id) => {
+  if (localStorage.getItem('favoritos')) {
+    filmesFavoritos = JSON.parse(localStorage.getItem('favoritos'));
+  }
+
+  const procurarFilme = filmesFavoritos.find(movie => movie.id === id);
+  const filmesFiltrados = filmesFavoritos.filter(movie => movie.id != procurarFilme.id);
+  const filmesFiltradosJSON = JSON.stringify(filmesFiltrados);
+  localStorage.setItem('favoritos', filmesFiltradosJSON);
+}
+
+// Função para mostrar na tela a lista de filmes
+const mostrarLista = () => {
   listaFilmes.innerHTML = '';
 
   filmes.forEach((filme) => {
@@ -79,6 +110,7 @@ const renderizarLista = () => {
   });
 }
 
+// Função para mudar o estado ente 'favorito' e 'não favorito'
 const favoritoClicado = (eventoDeClique, objetoFilme) => {
   const favoriteState = {
     favorited: '../images/heart-fill.svg',
@@ -89,30 +121,9 @@ const favoritoClicado = (eventoDeClique, objetoFilme) => {
 
   if (nomeImagemAtual === 'heart.svg') {
     eventoDeClique.target.src = favoriteState.favorited;
-    salvarLocalStorage(objetoFilme);
+    salvarFilmeFavorito(objetoFilme);
   } else {
     eventoDeClique.target.src = favoriteState.notFavorited;
-    removerLocalStorage(objetoFilme.id);
+    removerFilmeFavorito(objetoFilme.id);
   }
-}
-
-const salvarLocalStorage = (objetoFilme) => {
-  if (localStorage.getItem('favoritos')) {
-    filmesFavoritos = JSON.parse(localStorage.getItem('favoritos'));
-  }
-
-  filmesFavoritos.push(objetoFilme);
-  const moviesJSON = JSON.stringify(filmesFavoritos);
-  localStorage.setItem('favoritos', moviesJSON);
-}
-
-const removerLocalStorage = (id) => {
-  if (localStorage.getItem('favoritos')) {
-    filmesFavoritos = JSON.parse(localStorage.getItem('favoritos'));
-  }
-
-  const procurarFilme = filmesFavoritos.find(movie => movie.id === id);
-  const filmesFiltrados = filmesFavoritos.filter(movie => movie.id != procurarFilme.id);
-  const filmesFiltradosJSON = JSON.stringify(filmesFiltrados);
-  localStorage.setItem('favoritos', filmesFiltradosJSON);
 }

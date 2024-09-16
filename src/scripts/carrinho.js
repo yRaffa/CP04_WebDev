@@ -4,6 +4,7 @@ function exibirCarrinho() {
     const listaProdutos = document.querySelector('#lista-produtos');
     listaProdutos.innerHTML = '';
     let valorTotal = 0;
+
     if (carrinho && carrinho.length > 0) {
         carrinho.forEach(produto => {
             const novoProduto = document.createElement('li');
@@ -11,6 +12,7 @@ function exibirCarrinho() {
             listaProdutos.appendChild(novoProduto);
             valorTotal += produto.valor;
         });
+
         const total = document.createElement('p');
         total.innerHTML = `<br>Total da Compra: R$ ${valorTotal.toFixed(2)}`;
         listaProdutos.appendChild(total);
@@ -25,12 +27,14 @@ exibirCarrinho();
 function adicionarProduto(id, nome, valor, quantidade) {
     let carrinho = JSON.parse(localStorage.getItem('carrinho')) || [];
     const produtoExistente = carrinho.find(produto => produto.id === id);
+
     if (produtoExistente) {
         produtoExistente.quantidade += quantidade;
         produtoExistente.valor += valor;
     } else {
         carrinho.push({ id, nome, valor, quantidade });
     }
+
     localStorage.setItem('carrinho', JSON.stringify(carrinho));
     exibirCarrinho();
 }
