@@ -18,11 +18,15 @@ window.onload = () => {
   mostrarLista();
 }
 
-// Função para o botão de adicionar u filme a lista
+// Função para o botão de adicionar um filme a lista
 botaoAdicionar.addEventListener('click', () => {
   const inputTitulo = document.querySelector('#tituloInput');
   const inputGenero = document.querySelector('#generoInput');
   const inputAno = document.querySelector('#anoInput');
+
+  inputTitulo.value.trim();
+  inputGenero.value.trim();
+  inputAno.value.trim();
 
   if (inputTitulo === '' || inputGenero === '' || inputAno === '') {
     alert('Para adicionar um filme, preencha todos os campos!');
