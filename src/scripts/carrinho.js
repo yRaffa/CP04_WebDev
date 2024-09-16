@@ -46,3 +46,9 @@ function removerProduto(id) {
     localStorage.setItem('carrinho', JSON.stringify(carrinho));
     exibirCarrinho();
 }
+
+// Função para limpar todos os produtos do carrinho
+function limparCarrinho() {
+    localStorage.removeItem('carrinho');
+    exibirCarrinho();
+}
