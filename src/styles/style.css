@@ -51,7 +51,7 @@ header h1 {
 }
 
 .card:hover {
-    transform: scale(1.05);
+    transform: scale(1.025);
 }
 
 .card img {
@@ -72,8 +72,8 @@ header h1 {
 
 .btn:hover {
     background-color: var(--vermelho-claro);
-    color: white;
     border-color: var(--vermelho-claro);
+    color: white;
 }
 
 

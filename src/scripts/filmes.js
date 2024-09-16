@@ -1,146 +1,112 @@
-// Criando a base de dados de filmes
-const filmes = [
-  {id: 0,
-  nome: 'Harry Potter',
-  genero: 'Fantasia',
-  lancamento: 2001},
-  
-  {id: 1,
-  nome: 'Avatar',
-  genero: 'Fantasia',
-  lancamento: 2010},
-  
-  {id:2,
-  nome:'O Senhor dos Anéis',
-  genero: 'Fantasia',
-  lancamento: 2000,},
+const botaoAdicionar = document.querySelector('#btnAdicionar');
+const listaFilmes = document.querySelector('#listaFilmes');
 
-  {id:3,
-  nome: 'Branquelas',
-  genero: 'comédia',
-  lancamento: 2007},
-
-  {id:4,
-  nome: 'A Lagoa Azul',
-  genero: 'romance',
-  lancamento: 1983},
+let filmes = [
+  {id: 0, nome: 'Jujutsu Kaisen 0', genero: 'Shounen', lancamento: 2021,},
+  {id: 1, nome: 'Homem-Aranha: Através do Aranha-Verso', genero: 'Ação', lancamento: 2023},
+  {id: 2, nome: 'Vingadores: Guerra Infinita', genero: 'Ação', lancamento: 2018},
 ];
 
-// Criando um array de filmes favoritos
-
-let filmesFavoritos = []
-
-// Pegando Elementos HTML
-
-//pega o elemento button
-const btn1 = document.querySelector('button')
-//pega a lista de filmes
-const listaFilmes = document.querySelector('#listaFilmes')
-
-// Ao carregar a página, executa a função que renderiza os elementos na tela
+let filmesFavoritos = [];
 
 window.onload = () => {
- renderizarLista()
+  carregarFilmes();
+  renderizarLista();
 }
 
-// Função para renderizar filmes na tela
+const carregarFilmes = () => {
+  const filmesSalvos = localStorage.getItem('filmes');
+  if (filmesSalvos) {
+    filmes = JSON.parse(filmesSalvos);
+  }
 
-const renderizarLista = () =>{
-  //limpa a tela antes de renderizar
-  listaFilmes.innerHTML = ""
-  //percorre o array de filmes, inserindo um li com o nome do filme a cada volta do loop
-  filmes.forEach((filme)=>{
-      const itemLista = document.createElement('li')
-      //adiciona o li à lista de filmes
-      listaFilmes.append(itemLista)
-      //adiciona o filme que o usuário digitou à lista
-      itemLista.innerHTML = `Meu filme ${filme.nome}`
-
-      
-      //cria uma nova imagem
-      const favorito = document.createElement('img')
-      //adiciona imagem ao item img
-      favorito.src = 'img/heart.svg'
-      //muda o cursor da imagem para mãozinha de clique
-      favorito.style.cursor = 'pointer'
-      //adiciona evento de clique à imagem
-      favorito.addEventListener('click',(e)=>{
-          favoritoClicado(e,filme)
-      })
-      //adiciona a imagem ao item da lista
-      itemLista.append(favorito)
-  })
+  const favoritosSalvos = localStorage.getItem('favoritos');
+  if (favoritosSalvos) {
+    filmesFavoritos = JSON.parse(favoritosSalvos);
+  }
 }
 
-// Adiciona o evento de clique ao botão 
+const renderizarLista = () => {
+  listaFilmes.innerHTML = '';
 
-btn1.addEventListener('click',()=>{
-  //pega o input onde o usuário digita o filme
-  const inputUsuario = document.querySelector('#filmeInput')
-  /*adiciona um id ao filme considerando que o tamanho do array será sempre um a mais que seu index, já que o index começa em 0 */
-  let id = filmes.length
-  //adiciona o valor à propriedade nome do objeto dentro do array filmes
-  filmes.push({id:id,nome: inputUsuario.value, genero: '', lancamento: ''})
-  console.log(filmes)
-  //renderiza a lista novamente
-  renderizarLista()
-  //apaga o campo de digitação
-  inputUsuario.value = ''
-})
+  filmes.forEach((filme) => {
+    const itemLista = document.createElement('li');
+    itemLista.innerHTML = `${filme.nome}`;
 
-// Função que é executada quando o botão de favorito é clicado
+    const favorito = document.createElement('img');
+    const favoritoSalvo = filmesFavoritos.find(f => f.id === filme.id);
+
+    if (favoritoSalvo) {
+      favorito.src = '../images/heart-fill.svg';
+    } else {
+      favorito.src = '../images/heart.svg';
+    }
+    
+    favorito.style.cursor = 'pointer';
+    favorito.addEventListener('click', (e) => {
+      favoritoClicado(e, filme);
+    });
+
+    itemLista.append(favorito);
+    listaFilmes.append(itemLista);
+  });
+}
+
+const salvarFilmes = () => {
+  const filmesJSON = JSON.stringify(filmes);
+  localStorage.setItem('filmes', filmesJSON);
+}
+
+botaoAdicionar.addEventListener('click', () => {
+  const inputTitulo = document.querySelector('#tituloInput');
+  const inputGenero = document.querySelector('#generoInput');
+  const inputAno = document.querySelector('#anoInput');
+  let id = filmes.length;
+
+  filmes.push({id:id,nome: inputTitulo.value, genero: inputGenero.value, lancamento: inputAno.value});
+
+  salvarFilmes();
+  renderizarLista();
+
+  inputTitulo.value = '';
+  inputGenero.value = '';
+  inputAno.value = '';
+});
 
 const favoritoClicado = (eventoDeClique, objetoFilme) => {
-  /*adiciona um objeto com a propriedade favorito e não favorito,
-  e seus valores são os caminhos da imagem*/
   const favoriteState = {
-      favorited: 'img/heart-fill.svg',
-      notFavorited: 'img/heart.svg'
-    }
-    //valida se o src da imagem que foi clicada inclui o caminho da imagem de não favoritado
-    if(eventoDeClique.target.src.includes(favoriteState.notFavorited)) {
-      // se não incluir, mudar a imagem para favoritado e executar a função de salvar no localStorage
-      eventoDeClique.target.src = favoriteState.favorited
-      saveToLocalStorage(objetoFilme)
-    } else {
-      /* senão, manter a imagem de não favoritado e executar a função de remover
-      do localStorage, passando como parâmetro o id do filme*/
-      eventoDeClique.target.src = favoriteState.notFavorited
-      removeFromLocalStorage(objetoFilme.id)
-    }
+    favorited: '../images/heart-fill.svg',
+    notFavorited: '../images/heart.svg'
+  }
 
+  const nomeImagemAtual = eventoDeClique.target.src.split('/').pop();
+
+  if (nomeImagemAtual === 'heart.svg') {
+    eventoDeClique.target.src = favoriteState.favorited;
+    salvarLocalStorage(objetoFilme);
+  } else {
+    eventoDeClique.target.src = favoriteState.notFavorited;
+    removerLocalStorage(objetoFilme.id);
+  }
 }
 
-// Função executada para salvar o filme no localStorage
-
-const saveToLocalStorage = (objetoFilme) => {
-  //checa se já existe um campo de favoritos no LocalStorage
-  //se houver, ele salva no array filmesFavoritos
-  if(localStorage.getItem('favoritos')){
-      filmesFavoritos = JSON.parse(localStorage.getItem('favoritos'));
+const salvarLocalStorage = (objetoFilme) => {
+  if (localStorage.getItem('favoritos')) {
+    filmesFavoritos = JSON.parse(localStorage.getItem('favoritos'));
   }
-  //adiciona o nome do Filme ao array filmesFavoritos
-  filmesFavoritos.push(objetoFilme)
-  //transforma o array em string para poder salvar no LocalStorage
-  const moviesJSON = JSON.stringify(filmesFavoritos)
-  //Salva no localStorage
-  localStorage.setItem('favoritos', moviesJSON)
+
+  filmesFavoritos.push(objetoFilme);
+  const moviesJSON = JSON.stringify(filmesFavoritos);
+  localStorage.setItem('favoritos', moviesJSON);
 }
 
-// Função executada para remover o filme no localStorage
-
-function removeFromLocalStorage(id) {
-   //checa se já existe um campo de favoritos no LocalStorage
-  //se houver, ele salva no array filmesFavoritos
-  if(localStorage.getItem('favoritos')){
-      filmesFavoritos = JSON.parse(localStorage.getItem('favoritos'));
+const removerLocalStorage = (id) => {
+  if (localStorage.getItem('favoritos')) {
+    filmesFavoritos = JSON.parse(localStorage.getItem('favoritos'));
   }
-  //procura no array o id do filme
-  const procurarFilme = filmesFavoritos.find(movie => movie.id === id)
-  //filtra todos os filmes que tem o id diferente do que foi encontrado e gera um novo array
-  const filmesFiltrados = filmesFavoritos.filter(movie => movie.id != procurarFilme.id)
-  //transforma o array em string para poder salvar no LocalStorage
-  const filmesFiltradosJSON = JSON.stringify(filmesFiltrados)
-  //guarda esse novo array no localStorage
-  localStorage.setItem('favoritos', filmesFiltradosJSON)
+  
+  const procurarFilme = filmesFavoritos.find(movie => movie.id === id);
+  const filmesFiltrados = filmesFavoritos.filter(movie => movie.id != procurarFilme.id);
+  const filmesFiltradosJSON = JSON.stringify(filmesFiltrados);
+  localStorage.setItem('favoritos', filmesFiltradosJSON);
 }

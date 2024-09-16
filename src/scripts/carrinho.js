@@ -7,14 +7,12 @@ function exibirCarrinho() {
     if (carrinho && carrinho.length > 0) {
         carrinho.forEach(produto => {
             const novoProduto = document.createElement('li');
-            novoProduto.textContent = `${produto.nome} / Quantidade: ${produto.quantidade} / Valor: R$ ${produto.valor.toFixed(2)}`;
+            novoProduto.innerHTML = `${produto.nome} / Quantidade: ${produto.quantidade} / Valor: R$ ${produto.valor.toFixed(2)}`;
             listaProdutos.appendChild(novoProduto);
             valorTotal += produto.valor;
         });
-        const espaco = document.createElement('br')
         const total = document.createElement('p');
-        total.textContent = `Total da Compra: R$ ${valorTotal.toFixed(2)}`;
-        listaProdutos.appendChild(espaco);
+        total.innerHTML = `<br>Total da Compra: R$ ${valorTotal.toFixed(2)}`;
         listaProdutos.appendChild(total);
     } else {
         listaProdutos.innerHTML = 'Carrinho Vazio!';
