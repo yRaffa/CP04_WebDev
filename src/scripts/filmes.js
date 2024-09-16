@@ -1,28 +1,28 @@
-// Criando a base de dados de filmes  
+// Criando a base de dados de filmes
 const filmes = [
   {id: 0,
   nome: 'Harry Potter',
   genero: 'Fantasia',
   lancamento: 2001},
-
+  
   {id: 1,
   nome: 'Avatar',
   genero: 'Fantasia',
   lancamento: 2010},
-
+  
   {id:2,
-  nome:'O senhor dos Anéis',
+  nome:'O Senhor dos Anéis',
   genero: 'Fantasia',
   lancamento: 2000,},
 
   {id:3,
   nome: 'Branquelas',
-  genero: 'Comédia',
+  genero: 'comédia',
   lancamento: 2007},
 
   {id:4,
   nome: 'A Lagoa Azul',
-  genero: 'Romance',
+  genero: 'romance',
   lancamento: 1983},
 ];
 
@@ -40,7 +40,7 @@ const listaFilmes = document.querySelector('#listaFilmes')
 // Ao carregar a página, executa a função que renderiza os elementos na tela
 
 window.onload = () => {
-  renderizarLista()
+ renderizarLista()
 }
 
 // Função para renderizar filmes na tela
@@ -54,13 +54,13 @@ const renderizarLista = () =>{
       //adiciona o li à lista de filmes
       listaFilmes.append(itemLista)
       //adiciona o filme que o usuário digitou à lista
-      itemLista.innerHTML = `${filme.nome}`
+      itemLista.innerHTML = `Meu filme ${filme.nome}`
 
       
       //cria uma nova imagem
       const favorito = document.createElement('img')
       //adiciona imagem ao item img
-      favorito.src = '../images/heart.svg'
+      favorito.src = 'img/heart.svg'
       //muda o cursor da imagem para mãozinha de clique
       favorito.style.cursor = 'pointer'
       //adiciona evento de clique à imagem
@@ -94,8 +94,8 @@ const favoritoClicado = (eventoDeClique, objetoFilme) => {
   /*adiciona um objeto com a propriedade favorito e não favorito,
   e seus valores são os caminhos da imagem*/
   const favoriteState = {
-      favorited: '../images/heart-fill.svg',
-      notFavorited: '../images/heart.svg'
+      favorited: 'img/heart-fill.svg',
+      notFavorited: 'img/heart.svg'
     }
     //valida se o src da imagem que foi clicada inclui o caminho da imagem de não favoritado
     if(eventoDeClique.target.src.includes(favoriteState.notFavorited)) {

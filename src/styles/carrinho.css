@@ -89,6 +89,10 @@ header h1 {
     border-color: var(--vermelho-claro);
 }
 
+i {
+    margin-bottom: 25px;
+}
+
 
 @media (max-width: 768px) {
     .container {

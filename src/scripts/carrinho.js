@@ -13,11 +13,11 @@ function exibirCarrinho() {
         });
         const espaco = document.createElement('br')
         const total = document.createElement('p');
-        total.textContent = `Valor total da compra: R$ ${valorTotal.toFixed(2)}`;
+        total.textContent = `Total da Compra: R$ ${valorTotal.toFixed(2)}`;
         listaProdutos.appendChild(espaco);
         listaProdutos.appendChild(total);
     } else {
-        listaProdutos.innerHTML = 'O carrinho está vazio!';
+        listaProdutos.innerHTML = 'Carrinho Vazio!';
     }
 }
 
