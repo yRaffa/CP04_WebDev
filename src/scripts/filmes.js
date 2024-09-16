@@ -20,29 +20,30 @@ window.onload = () => {
 
 // Função para o botão de adicionar um filme a lista
 botaoAdicionar.addEventListener('click', () => {
-  const inputTitulo = document.querySelector('#tituloInput');
-  const inputGenero = document.querySelector('#generoInput');
-  const inputAno = document.querySelector('#anoInput');
-
-  inputTitulo.value.trim();
-  inputGenero.value.trim();
-  inputAno.value.trim();
+  const inputTitulo = document.querySelector('#tituloInput').value.trim();
+  const inputGenero = document.querySelector('#generoInput').value.trim();
+  const inputAno = document.querySelector('#anoInput').value.trim();
 
   if (inputTitulo === '' || inputGenero === '' || inputAno === '') {
     alert('Para adicionar um filme, preencha todos os campos!');
     return;
   }
 
+  if (isNaN(inputAno) || inputAno <= 0) {
+    alert('O ano de lançamento deve ser um número maior que zero!');
+    return;
+  }
+
   let id = filmes.length;
 
-  filmes.push({id:id,nome: inputTitulo.value, genero: inputGenero.value, lancamento: inputAno.value});
+  filmes.push({id: id, nome: inputTitulo, genero: inputGenero, lancamento: inputAno});
 
-  salvarFilmes();
+  salvarFilme();
   mostrarLista();
 
-  inputTitulo.value = '';
-  inputGenero.value = '';
-  inputAno.value = '';
+  document.querySelector('#tituloInput').value = '';
+  document.querySelector('#generoInput').value = '';
+  document.querySelector('#anoInput').value = '';
 });
 
 // Função para carregar informações dos filmes no LocalStorage
@@ -59,9 +60,16 @@ const carregarFilmes = () => {
 }
 
 // Função para salvar filmes no LocalStorage
-const salvarFilmes = () => {
+const salvarFilme = () => {
   const filmesJSON = JSON.stringify(filmes);
   localStorage.setItem('filmes', filmesJSON);
+}
+
+// Função para remover filmes no LocalStorage
+const removerFilme = (id) => {
+  filmes = filmes.filter(filme => filme.id !== id);
+  salvarFilme();
+  mostrarLista();
 }
 
 // Função para salvar filmes favoritos no LocalStorage
@@ -93,8 +101,8 @@ const mostrarLista = () => {
 
   filmes.forEach((filme) => {
     const itemLista = document.createElement('li');
-    itemLista.innerHTML = `${filme.nome}`;
-
+    const botoes = document.createElement('div');
+    botoes.className = 'botoes';
     const favorito = document.createElement('img');
     const favoritoSalvo = filmesFavoritos.find(f => f.id === filme.id);
 
@@ -109,7 +117,23 @@ const mostrarLista = () => {
       favoritoClicado(e, filme);
     });
 
-    itemLista.append(favorito);
+    const remover = document.createElement('button');
+    remover.textContent = 'Remover';
+    remover.className = 'btn btn-danger btn-sm remover';
+    remover.id = '';
+    remover.addEventListener('click', () => {
+      removerFilme(filme.id);
+    });
+
+    botoes.append(remover);
+    botoes.append(favorito);
+
+    const nomeFilme = document.createElement('span');
+    nomeFilme.className = 'nome-filme';
+    nomeFilme.textContent = filme.nome;
+
+    itemLista.append(nomeFilme);
+    itemLista.append(botoes);
     listaFilmes.append(itemLista);
   });
 }
