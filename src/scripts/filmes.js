@@ -14,6 +14,28 @@ window.onload = () => {
   renderizarLista();
 }
 
+botaoAdicionar.addEventListener('click', () => {
+  const inputTitulo = document.querySelector('#tituloInput');
+  const inputGenero = document.querySelector('#generoInput');
+  const inputAno = document.querySelector('#anoInput');
+
+  if (inputTitulo === '' || inputGenero === '' || inputAno === '') {
+    alert('Para adicionar um filme, preencha todos os campos!');
+    return;
+  }
+
+  let id = filmes.length;
+
+  filmes.push({id:id,nome: inputTitulo.value, genero: inputGenero.value, lancamento: inputAno.value});
+
+  salvarFilmes();
+  renderizarLista();
+
+  inputTitulo.value = '';
+  inputGenero.value = '';
+  inputAno.value = '';
+});
+
 const carregarFilmes = () => {
   const filmesSalvos = localStorage.getItem('filmes');
   if (filmesSalvos) {
@@ -24,6 +46,11 @@ const carregarFilmes = () => {
   if (favoritosSalvos) {
     filmesFavoritos = JSON.parse(favoritosSalvos);
   }
+}
+
+const salvarFilmes = () => {
+  const filmesJSON = JSON.stringify(filmes);
+  localStorage.setItem('filmes', filmesJSON);
 }
 
 const renderizarLista = () => {
@@ -51,27 +78,6 @@ const renderizarLista = () => {
     listaFilmes.append(itemLista);
   });
 }
-
-const salvarFilmes = () => {
-  const filmesJSON = JSON.stringify(filmes);
-  localStorage.setItem('filmes', filmesJSON);
-}
-
-botaoAdicionar.addEventListener('click', () => {
-  const inputTitulo = document.querySelector('#tituloInput');
-  const inputGenero = document.querySelector('#generoInput');
-  const inputAno = document.querySelector('#anoInput');
-  let id = filmes.length;
-
-  filmes.push({id:id,nome: inputTitulo.value, genero: inputGenero.value, lancamento: inputAno.value});
-
-  salvarFilmes();
-  renderizarLista();
-
-  inputTitulo.value = '';
-  inputGenero.value = '';
-  inputAno.value = '';
-});
 
 const favoritoClicado = (eventoDeClique, objetoFilme) => {
   const favoriteState = {
@@ -104,7 +110,7 @@ const removerLocalStorage = (id) => {
   if (localStorage.getItem('favoritos')) {
     filmesFavoritos = JSON.parse(localStorage.getItem('favoritos'));
   }
-  
+
   const procurarFilme = filmesFavoritos.find(movie => movie.id === id);
   const filmesFiltrados = filmesFavoritos.filter(movie => movie.id != procurarFilme.id);
   const filmesFiltradosJSON = JSON.stringify(filmesFiltrados);
