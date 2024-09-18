@@ -138,7 +138,7 @@ const mostrarLista = () => {
   });
 }
 
-// Função para mudar o estado ente 'favorito' e 'não favorito'
+// Função para mudar o estado entre 'favorito' e 'não favorito'
 const favoritoClicado = (eventoDeClique, objetoFilme) => {
   const favoriteState = {
     favorited: '../images/heart-fill.svg',
