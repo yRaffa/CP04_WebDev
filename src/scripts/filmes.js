@@ -140,18 +140,18 @@ const mostrarLista = () => {
 
 // Função para mudar o estado entre 'favorito' e 'não favorito'
 const favoritoClicado = (eventoDeClique, objetoFilme) => {
-  const favoriteState = {
+  const estadoFavorito = {
     favorited: '../images/heart-fill.svg',
     notFavorited: '../images/heart.svg'
   }
 
-  const nomeImagemAtual = eventoDeClique.target.src.split('/').pop();
+  const nomeImagem = eventoDeClique.target.src.split('/').pop();
 
-  if (nomeImagemAtual === 'heart.svg') {
-    eventoDeClique.target.src = favoriteState.favorited;
+  if (nomeImagem === 'heart.svg') {
+    eventoDeClique.target.src = estadoFavorito.favorited;
     salvarFilmeFavorito(objetoFilme);
   } else {
-    eventoDeClique.target.src = favoriteState.notFavorited;
+    eventoDeClique.target.src = estadoFavorito.notFavorited;
     removerFilmeFavorito(objetoFilme.id);
   }
 }
